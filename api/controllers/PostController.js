@@ -14,27 +14,7 @@ var moment = require('moment');
 module.exports = {
 
 	'/':function(req, res){
-		var i;
-		postsRef.orderByValue().on("value", function(snapshot) {
-			sails.log("i = "+i);
-			i = 0;
-			var resultsFirebase = [];
-			snapshot.forEach(function(data) {
-				resultsFirebase[i] = {};
-				resultsFirebase[i].title = data.val().title;
-				resultsFirebase[i].description = data.val().description;
-				resultsFirebase[i].author = data.val().author;
-				resultsFirebase[i].imagePresents = data.val().imagePresents;
-				resultsFirebase[i].imageData = data.val().imageData;
-				sails.log("title: "+data.val().title+" i: "+i);
-				i += 1;
-			});
-			resultsFirebase.reverse();
-			sails.log("After resultsFirebase.reverse();");
-			res.view('posts/posts',{
-				posts: resultsFirebase,
-			});
-		});
+		res.view('posts/posts');
 	},
 
 	'new': function(req, res){
@@ -114,4 +94,4 @@ module.exports = {
 
 			},
 
- }
+		}
