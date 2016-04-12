@@ -19,7 +19,7 @@
 
  module.exports.policies = {
     '*': true,
-   'PostController': {
-     '*': 'isAuthenticated'
-   },
+  //  'PostController': {
+  //    '*': 'isAuthenticated'
+  //  },
  };
