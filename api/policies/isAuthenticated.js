@@ -1,12 +1,9 @@
 module.exports = function(req, res, next) {
-  var Firebase = require("firebase");
-  var ref = new Firebase(sails.config.globals.ref_firebase);
-  var authData = ref.getAuth();
-  if (authData) {
-    sails.log("User " + authData.uid + " is logged in with " + authData.provider);
+  if (req.cookies.userLoggedIn == '1') {
+    sails.log("USER CONNECTED")
     return next();
   } else {
-    sails.log("User is logged out");
+    sails.log("USER NOT CONNECTED")
     return res.redirect('/login');
   }
 };

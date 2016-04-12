@@ -48,6 +48,11 @@ module.exports.routes = {
   'post /post/new':{
       controller: 'PostController',
       action: 'send'
+  },
+
+  'get /logout':{
+    controller: 'AuthController',
+    action: 'logout'
   }
 
 };

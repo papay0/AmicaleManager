@@ -27,4 +27,9 @@ module.exports = {
 		});
 	},
 
+	logout: function(req, res) {
+		res.clearCookie('userLoggedIn');
+		return res.redirect('/');
+	}
+
 };
