@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>Post | Notification</h2>
+  <% _.each(posts, function (post) { %>
+    <div class="panel-group">
+      <div class="panel panel-success">
+        <div class="panel-heading"><%= post.title %></div>
+        <div class="panel-body"><%= post.description -%></div>
+      </div>
+      <% if (post.imagePresents == true) { %>
+        <p align="center">
+          <img src="data:image/gif;base64,<%= post.imageData %>" height="352" width="470"/>
+        </p>
+      <% }%>
+        <br>
+    <% }) %>
+      </div>
+    </div>

@@ -30,9 +30,24 @@ module.exports.routes = {
        view: 'login/login'
   },
 
-  'post /login': {
+  'post /login': { // login formulaire
     controller: 'AuthController',
     action: 'login'
   },
+
+  'get /post':{ //  see all notifications
+      controller: 'PostController',
+      action: '/'
+  },
+
+  'get /post/new':{
+      controller: 'PostController',
+      action: 'new'
+  },
+
+  'post /post/new':{
+      controller: 'PostController',
+      action: 'send'
+  }
 
 };
