@@ -1,3 +1,94 @@
 <div id="content"></div>
 
-<script type="text/javascript" src="/react/posts/postsBrowserified.js"></script>
+<!-- <script type="text/javascript" src="/react/posts/postsBrowserified.js"></script> -->
+<script type="text/babel">
+
+var firebaseUrl = "https://amicale2test2016.firebaseio.com/";
+
+var CommentBox = React.createClass({
+  mixins: [ReactFireMixin],
+
+
+  getInitialState: function() {
+    return {
+      data: []
+    };
+  },
+
+  componentWillMount: function() {
+    // Here we bind the component to Firebase and it handles all data updates,
+    // no need to poll as in the React example.
+    this.bindAsArray(new Firebase(firebaseUrl + "posts"), "data");
+  },
+
+  render: function() {
+    var commentNodes = this.state.data.map(function(comment) {
+      return (
+        <p author={comment.author} key={comment.timestamp}>
+        {comment.description}
+        </p>
+      );
+    });
+    return (
+      <div className="commentBox">
+      {commentNodes}
+      </div>
+    );
+  }
+});
+
+var Create = React.createClass({
+  render:function(){
+    return (
+      <h2>Coucou</h2>
+    )
+  }
+});
+
+var Posts = React.createClass({
+  mixins: [ReactFireMixin],
+
+  getInitialState: function() {
+    return {
+      data: []
+    };
+  },
+
+  componentWillMount: function() {
+    // Here we bind the component to Firebase and it handles all data updates,
+    // no need to poll as in the React example.
+    this.bindAsArray(new Firebase(firebaseUrl + "posts"), "data");
+  },
+
+  render: function() {
+    var posts = this.state.data.map(function(post) {
+      var img = "";
+      if (post.imagePresents == true) {
+        img = <img src={"data:image/gif;base64,"+post.imageData} height='352' width='470'/>
+      }
+      return (
+        <div className="panel-group" key={post.timestamp}>
+          <div className="panel panel-default">
+            <div className="panel-heading"> {post.title}</div>
+            <div className="panel-body"> {post.description}</div>
+          </div>
+          <p align="center">
+            {img}
+          </p>
+        </div>
+      );
+    });
+    return (
+      <div className="container">
+        <h2>Post | Notification</h2>
+        {posts}
+      </div>
+    );
+  }
+});
+
+ReactDOM.render(
+  <Posts/>,
+  document.getElementById('content')
+);
+</script>

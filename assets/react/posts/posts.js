@@ -1,6 +1,3 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-
 var firebaseUrl = "https://amicale2test2016.firebaseio.com/";
 
 var Create = React.createClass({
