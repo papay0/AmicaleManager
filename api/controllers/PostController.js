@@ -50,7 +50,7 @@ module.exports = {
 					var fs = require('fs');
 					var fileData = fs.readFileSync(filePath);
 					var base64File = new Buffer(fileData).toString('base64');
-					sails.log("base64 = "+base64File);
+					//sails.log("base64 = "+base64File);
 					//sails.log("fileData = "+ fileData);
 					newPostRef.set({
 						author: "Amicale",

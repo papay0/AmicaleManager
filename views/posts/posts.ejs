@@ -57,31 +57,38 @@ var Posts = React.createClass({
   componentWillMount: function() {
     // Here we bind the component to Firebase and it handles all data updates,
     // no need to poll as in the React example.
+    console.log("componentWillMount");
     this.bindAsArray(new Firebase(firebaseUrl + "posts"), "data");
   },
 
   render: function() {
     var posts = this.state.data.map(function(post) {
       var img = "";
+      var divStyleImg = {
+        width: "200",
+        height: "200"
+      };
+      console.log(post.title);
       if (post.imagePresents == true) {
-        img = <img src={"data:image/gif;base64,"+post.imageData} height='352' width='470'/>
+        img = <img src={"data:image/gif;base64,"+post.imageData} style={divStyleImg}/>
       }
       return (
         <div className="panel-group" key={post.timestamp}>
-          <div className="panel panel-default">
-            <div className="panel-heading"> {post.title}</div>
-            <div className="panel-body"> {post.description}</div>
-          </div>
-          <p align="center">
-            {img}
-          </p>
+        <div className="panel panel-default">
+        <div className="panel-heading"> {post.title}</div>
+        <div className="panel-body"> {post.description}</div>
+        </div>
+        <p align="center">
+        {img}
+        </p>
         </div>
       );
     });
+    posts = posts.reverse();
     return (
       <div className="container">
-        <h2>Post | Notification</h2>
-        {posts}
+      <h2>Post | Notification</h2>
+      {posts}
       </div>
     );
   }
