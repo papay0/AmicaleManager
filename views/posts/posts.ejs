@@ -65,8 +65,8 @@ var Posts = React.createClass({
     var posts = this.state.data.map(function(post) {
       var img = "";
       var divStyleImg = {
-        width: "200",
-        height: "200"
+        width: 470,
+        height: 352
       };
       console.log(post.title);
       if (post.imagePresents == true) {
@@ -76,11 +76,13 @@ var Posts = React.createClass({
         <div className="panel-group" key={post.timestamp}>
         <div className="panel panel-default">
         <div className="panel-heading"> {post.title}</div>
-        <div className="panel-body"> {post.description}</div>
+        <div className="panel-body">
+          {post.description}
+          <br/>
+          <br/>
+          {img}
         </div>
-        <p align="center">
-        {img}
-        </p>
+        </div>
         </div>
       );
     });
