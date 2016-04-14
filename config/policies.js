@@ -22,4 +22,7 @@
    'PostController': {
      '*': 'isAuthenticated'
    },
+   'NotificationController': {
+     '*': 'isAuthenticated'
+   }
  };

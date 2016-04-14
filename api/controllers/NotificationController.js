@@ -24,4 +24,14 @@ module.exports = {
 		});
 	},
 
+	'send': function(req, res){
+		var text = req.param("text");
+		sails.controllers.notification.sendPush(text);
+		res.redirect('/post');
+	},
+
+	'new': function(req, res){
+		res.view('notification/notification');
+	}
+
 };

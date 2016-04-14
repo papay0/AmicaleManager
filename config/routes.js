@@ -53,6 +53,16 @@ module.exports.routes = {
   'get /logout':{
     controller: 'AuthController',
     action: 'logout'
+  },
+
+  'get /notification':{
+    controller: 'NotificationController',
+    action: 'new'
+  },
+
+  'post /notification/new': {
+    controller: 'NotificationController',
+    action: 'send'
   }
 
 };
