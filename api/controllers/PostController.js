@@ -18,79 +18,6 @@ module.exports = {
 	},
 
 	'new': function(req, res){
-		// var Parse = require('parse-server');
-		// Parse.initialize("yhx0fv10GQ9YNGZgfW23gC9oj0XqCIlKnn0ZdrFJ", "bvxNohiyX0JnA0D6nYvnTWMDNzfHteMspduuWGDu", "d7jNHhwLnOn77LH4GcFcHMbsMeMQqkG5BXuoZEpj");
-		// Parse.serverURL = 'https://parseapi.back4app.com/'
-		// Parse.Cloud.run('sendPush', { title: 'The Matrix' }, {
-		// 	success: function(ratings) {
-		// 		// ratings should be 4.5
-		// 		sails.console.log("success parse");
-		// 	},
-		// 	error: function(error) {
-		// 		sails.console.log("error parse");
-		// 	}
-		// });
-		// 	curl -X POST \
-		// -H "X-Parse-Application-Id: yhx0fv10GQ9YNGZgfW23gC9oj0XqCIlKnn0ZdrFJ" \
-		// -H "X-Parse-Master-Key: d7jNHhwLnOn77LH4GcFcHMbsMeMQqkG5BXuoZEpj" \
-		// -H "X-Parse-REST-API-Key: NrQjxMmRjCtceNOmypCatIPAX0Kj0OIM9izR4l8S" \
-		// -H "Content-Type: application/json" \
-		// -d '{
-		//       "where": {
-		//         "deviceType": "ios"
-		//       },
-		//       "data": {
-		//         "alert": "Hello World!",
-		//         "sound": "cheering.caf",
-		//         "badge": "Increment"
-		//       }
-		//     }' \
-		// https://parseapi.back4app.com/push
-		// var http = require('http');
-		// var postData = JSON.stringify({
-		// 	"where": {
-		// 		"deviceType": "ios"
-		// 	},
-		// 	"data": {
-		// 		"alert": "Hello World!",
-		// 		"sound": "cheering.caf",
-		// 		"badge": "Increment"
-		// 	}
-		// });
-		//
-		// var options = {
-		// 	hostname: 'parseapi.back4app.com',
-		// 	path: '/push',
-		// 	port: 80,
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'X-Parse-Application-Id': 'yhx0fv10GQ9YNGZgfW23gC9oj0XqCIlKnn0ZdrFJ',
-		// 		'X-Parse-Master-Key': 'd7jNHhwLnOn77LH4GcFcHMbsMeMQqkG5BXuoZEpj',
-		// 		'X-Parse-REST-API-Key': 'NrQjxMmRjCtceNOmypCatIPAX0Kj0OIM9izR4l8S',
-		// 		'Content-Type': 'application/json'
-		// 	}
-		// };
-		//
-		// var req = http.request(options, (res) => {
-		// 	sails.log(`STATUS: ${res.statusCode}`);
-		// 	sails.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-		// 	res.setEncoding('utf8');
-		// 	res.on('data', (chunk) => {
-		// 		sails.log(`BODY: ${chunk}`);
-		// 	});
-		// 	res.on('end', () => {
-		// 		sails.log('No more data in response.')
-		// 	})
-		// });
-		//
-		// req.on('error', (e) => {
-		// 	sails.log(`problem with request: ${e.message}`);
-		// });
-		//
-		// // write data to request body
-		// req.write(postData);
-		// req.end();
-		sails.controllers.notification.sendPush("coucou");
 		res.view('posts/new');
 	},
 
@@ -141,6 +68,7 @@ module.exports = {
 							return res.serverError();
 						} else {
 							sails.log("Data saved successfully.");
+							sails.controllers.notification.sendPush(title);
 							res.redirect('/post');
 						}});
 					}
@@ -161,6 +89,7 @@ module.exports = {
 							return res.serverError();
 						} else {
 							sails.log("Data saved successfully.");
+							sails.controllers.notification.sendPush(title);
 							res.redirect('/post');
 						}});
 					}
