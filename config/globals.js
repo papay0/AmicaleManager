@@ -60,5 +60,5 @@ module.exports.globals = {
   ****************************************************************************/
 
 	// models: true
-  ref_firebase: "https://amicale2test2016.firebaseio.com/"
+  ref_firebase: "https://amicale2test2016.firebaseio.com/",
 };
