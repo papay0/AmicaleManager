@@ -63,6 +63,11 @@ module.exports.routes = {
   'post /notification/new': {
     controller: 'NotificationController',
     action: 'send'
+  },
+
+  'get /notification/troll': {
+    controller: 'NotificationController',
+    action: 'sendTroll'
   }
 
 };

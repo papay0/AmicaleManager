@@ -24,10 +24,29 @@ module.exports = {
 		});
 	},
 
+	'sendPushTroll': function(req, res){
+		var Parse = require('parse/node');
+		Parse.initialize(sails.config.globals.Parse_Application_Id);
+		Parse.javaScriptKey = sails.config.globals.Parse_Javascript_Key;
+		Parse.masterKey = sails.config.globals.Parse_Master_Key;
+		Parse._useMasterKey = true;
+		Parse.serverURL = sails.config.globals.Parse_Server_URL;
+		Parse.Cloud.run('sendPushTroll', {}).then(function(result) {
+			sails.log("Je suis gagant");
+		}, function(error) {
+			sails.log("Je suis perdant, error = "+error.message);
+		});
+	},
+
 	'send': function(req, res){
 		var text = req.param("text");
 		sails.controllers.notification.sendPush(text);
 		res.redirect('/post');
+	},
+
+	'sendTroll': function(req, res){
+		sails.controllers.notification.sendPushTroll();
+		res.redirect('/');
 	},
 
 	'new': function(req, res){
