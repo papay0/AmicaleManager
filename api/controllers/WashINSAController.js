@@ -90,10 +90,10 @@ module.exports = {
         startDateFound = false;
       })
       for (i = 0; i < 12 ; i++){
-        var available = null
-        var start = null;
-        var end = null
-        var remaningTime = null
+        var available = -1;
+        var start = -1;
+        var end = -1
+        var remainingTime = -1
         if (array[i]['available'] !== undefined) {
           available = array[i]['available'];
         }
@@ -104,9 +104,9 @@ module.exports = {
           end = array[i]['end'];
         }
         if (array[i]['remaningTime'] !== undefined) {
-          remaningTime = array[i]['remaningTime'];
+          remainingTime = array[i]['remaningTime'];
         }
-        json[i] = {'machine': i+1, 'available': available, 'start':start, 'end': end, 'remaningTime': remaningTime};
+        json[i] = {'machine': i+1, 'available': available, 'start':start, 'end': end, 'remainingTime': remainingTime};
       }
 			var jsonToSend = {'json':json, 'message':"Tout va bien", 'errorCode': 0}
       res.send(jsonToSend);
