@@ -26,13 +26,18 @@ module.exports = {
       var remaningTime = ""
       var i = 0;
       var state = 0;
+			var type = "";
       var startDateFound = false;
       var regexTime = /[0-9][0-9]?:[0-9][0-9]/;
       var data = $('td[style=\"height:10;vertical-align:middle\"]').map(function(index, element){
         var text = $(element).text();
-        //console.log("element.text(): "+text);
+        console.log("element.text(): "+text);
         //console.log("element: "+$(element));
         //if ($(element).attr('font') != "undefined" && $(element).attr('font').text() != "")  {
+				if (text.indexOf("SECHE") > -1 || text.indexOf("LAVE") > -1) {
+					type = text;
+					sails.log("type = "+type);
+				}
         if ($(element).children('font') != "")  {
           i += 1;
           //console.log("font: "+$(element).children('font'));
@@ -82,18 +87,24 @@ module.exports = {
         if (remaningTime !== "") {
           array[i-1]['remaningTime'] = remaningTime;
         }
+				if (type !== "") {
+					sails.log("i = "+i);
+					array[i]['type'] = type;
+				}
         //console.log("--------> available: "+available);
         startDate = "";
         endDate = "";
         available = "";
         remaningTime = "";
+				type = "";
         startDateFound = false;
       })
       for (i = 0; i < 12 ; i++){
         var available = -1;
         var start = -1;
-        var end = -1
-        var remainingTime = -1
+        var end = -1;
+        var remainingTime = -1;
+				var type = -1;
         if (array[i]['available'] !== undefined) {
           available = array[i]['available'];
         }
@@ -106,7 +117,10 @@ module.exports = {
         if (array[i]['remaningTime'] !== undefined) {
           remainingTime = array[i]['remaningTime'];
         }
-        json[i] = {'machine': i+1, 'available': available, 'start':start, 'end': end, 'remainingTime': remainingTime};
+				if (array[i]['type'] !== undefined) {
+					type = array[i]['type'];
+				}
+        json[i] = {'machine': i+1, 'available': available, 'start':start, 'end': end, 'remainingTime': remainingTime, 'type': type};
       }
 			var jsonToSend = {'json':json, 'message':"Tout va bien", 'errorCode': 0}
       res.send(jsonToSend);
