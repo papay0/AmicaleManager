@@ -108,7 +108,8 @@ module.exports = {
         }
         json[i] = {'machine': i+1, 'available': available, 'start':start, 'end': end, 'remaningTime': remaningTime};
       }
-      res.send(json);
+			var jsonToSend = {'json':json, 'message':"Tout va bien", 'errorCode': 0}
+      res.send(jsonToSend);
     } else {
 			res.send("Error loading page");
       console.log("error loading page");
