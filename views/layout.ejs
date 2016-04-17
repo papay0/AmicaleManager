@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
 <script src="https://fb.me/react-0.14.7.min.js"></script>
 <script src="https://fb.me/react-dom-0.14.7.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
@@ -44,8 +45,8 @@
 
 <body>
 
-  <nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
           <span class="sr-only">Toggle navigation</span>
@@ -56,13 +57,11 @@
         <a class="navbar-brand" href="/">Home</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="/post">See posts</a></li>
-          <li><a href="/post/new">New post</a></li>
-          <li><a href="/notification">New simple notification</a></li>
-          <li><a href="/notification/troll">Notification troll</a></li>
-        </ul>
         <ul class="nav navbar-nav navbar-right">
+          <li ><a data-toggle="collapse" data-target=".in" href="/post">See posts</a></li>
+          <li><a data-toggle="collapse" data-target=".in" href="/post/new">New post</a></li>
+          <li><a data-toggle="collapse" data-target=".in" href="/notification">New simple notification</a></li>
+          <li><a  data-toggle="collapse" data-target=".in"href="/notification/troll">Notification troll</a></li>
           <li><a href="/logout">LogOut</a></li>
         </ul>
       </div>
@@ -70,8 +69,6 @@
   </nav>
 
   <%- body %>
-
-
 
   <!--
   Client-side Templates
