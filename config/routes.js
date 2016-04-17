@@ -70,7 +70,7 @@ module.exports.routes = {
     action: 'sendTroll'
   },
 
-  'get /washINSA': {
+  'get /washINSA/json': {
     controller: 'WashINSAController',
     action: '/'
   }
