@@ -14,11 +14,20 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.image {  
+  width: 100%;
+  height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 
 <div id="content"></div>
 <div class="loader"></div>
 <!-- <script type="text/javascript" src="/react/posts/postsBrowserified.js"></script> -->
+
 <script type="text/babel">
 
 var firebaseUrl = "https://amicale.firebaseio.com/";
@@ -49,7 +58,7 @@ var Posts = React.createClass({
       };
       console.log(post.title);
       if (post.imagePresents == true) {
-        img = <img src={"data:image/gif;base64,"+post.imageData} style={divStyleImg}/>
+        img = <img className="image" src={"data:image/gif;base64,"+post.imageData} style={divStyleImg}/>
       }
       return (
         <div className="panel-group" key={post.timestamp}>
