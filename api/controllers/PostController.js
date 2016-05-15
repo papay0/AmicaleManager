@@ -68,7 +68,7 @@ module.exports = {
 							return res.serverError();
 						} else {
 							sails.log("Data saved successfully.");
-							//sails.controllers.notification.sendPush(title);
+							sails.controllers.notification.sendPush(title);
 							res.redirect('/post');
 						}});
 					}
@@ -89,7 +89,7 @@ module.exports = {
 							return res.serverError();
 						} else {
 							sails.log("Data saved successfully.");
-							//sails.controllers.notification.sendPush(title);
+							sails.controllers.notification.sendPush(title);
 							res.redirect('/post');
 						}});
 					}
