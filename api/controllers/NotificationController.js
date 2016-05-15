@@ -24,6 +24,22 @@ module.exports = {
 		});
 	},
 
+	'sendSimplePush': function(req, res){
+		var text = req;
+		sails.log("text = "+text);
+		var Parse = require('parse/node');
+		Parse.initialize(sails.config.globals.Parse_Application_Id);
+		Parse.javaScriptKey = sails.config.globals.Parse_Javascript_Key;
+		Parse.masterKey = sails.config.globals.Parse_Master_Key;
+		Parse._useMasterKey = true;
+		Parse.serverURL = sails.config.globals.Parse_Server_URL;
+		Parse.Cloud.run('sendSimplePush', {title: text }).then(function(result) {
+			sails.log("Je suis gagant");
+		}, function(error) {
+			sails.log("Je suis perdant, error = "+error.message);
+		});
+	},
+
 	'sendPushTroll': function(req, res){
 		var Parse = require('parse/node');
 		Parse.initialize(sails.config.globals.Parse_Application_Id);
@@ -40,7 +56,7 @@ module.exports = {
 
 	'send': function(req, res){
 		var text = req.param("text");
-		sails.controllers.notification.sendPush(text);
+		sails.controllers.notification.sendSimplePush(text);
 		res.redirect('/post');
 	},
 

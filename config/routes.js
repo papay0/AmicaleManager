@@ -73,6 +73,11 @@ module.exports.routes = {
   'get /washINSA/json': {
     controller: 'WashINSAController',
     action: '/'
-  }
+  },
+
+  'get /menuRU/json': {
+    controller: 'MenuRUController',
+    action: '/'
+  },
 
 };
