@@ -80,4 +80,9 @@ module.exports.routes = {
     action: '/'
   },
 
+  'get /locals/json': {
+    controller: 'LocalsController',
+    action: '/'
+  },
+
 };
