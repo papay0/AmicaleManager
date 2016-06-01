@@ -85,4 +85,9 @@ module.exports.routes = {
     action: '/'
   },
 
+  'get /versions/json': {
+    controller: 'MobileApplicationVersions',
+    action: '/'
+  }
+
 };
