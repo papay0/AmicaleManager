@@ -84,7 +84,9 @@ class NewPostComponent extends React.Component {
                   var newPostKey = firebase.database().ref().child('posts').push().key;
                   var updates = {};
                   updates['/posts/' + newPostKey] = postData;
-                  firebase.database().ref().update(updates);
+                  firebase.database().ref().update(updates).then(function() {
+                    that.redirectionPost();
+                  });
                   //that.redirectionPost();
               });
 
@@ -101,11 +103,30 @@ class NewPostComponent extends React.Component {
   			timestamp: timestamp,
   			timestampInverse: timestampInverse
       };
+      var fd = new FormData();
+      fd.append('title', title);
       var newPostKey = firebase.database().ref().child('posts').push().key;
       var updates = {};
       updates['/posts/' + newPostKey] = postData;
-      firebase.database().ref().update(updates);
-      //this.redirectionPost();
+      firebase.database().ref().update(updates).then(function() {
+        $.ajax({
+          url: '/notification/new',
+          type: 'POST',
+          data: fd,
+          dataType: 'json',
+          cache: false,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+                //alert("Success ajax notification/new: "+data);
+                console.log("Success to send notification");
+                that.redirectionPost();
+              }.bind(this),
+              error: function(xhr, status, err) {
+                alert("Error ajax post notification/new: "+err);
+              }.bind(this)
+            });
+      });
     }
   }
 

@@ -60,6 +60,7 @@ class LoginComponent extends React.Component {
 
   render() {
     return (
+      <div className="container">
       <form className="form-signin" onSubmit={this.onSubmit.bind(this)}>
       <h2 className="form-signin-heading">Amicale login</h2>
       <label  className="sr-only">Username</label>
@@ -75,6 +76,7 @@ class LoginComponent extends React.Component {
         />
         <button className="btn btn-lg btn-primary btn-block" type="submit" value="submit">Log in</button>
       </form>
+      </div>
     );
   }
 }
