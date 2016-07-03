@@ -20,9 +20,9 @@
  module.exports.policies = {
     '*': true,
    'PostController': {
-     '*': 'isAuthenticated'
+     '*': true
    },
    'NotificationController': {
-     '*': 'isAuthenticated'
+     '*': true
    }
  };

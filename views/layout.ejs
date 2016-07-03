@@ -31,12 +31,24 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
-<script src="https://fb.me/react-0.14.7.min.js"></script>
-<script src="https://fb.me/react-dom-0.14.7.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
-<script src="https://cdn.firebase.com/libs/reactfire/0.6.0/reactfire.min.js"></script>
-<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.js"></script>
+<!-- The core React library -->
+<script src="https://fb.me/react-15.2.0.js"></script>
+<!-- The ReactDOM Library -->
+<script src="https://fb.me/react-dom-15.2.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+<script src="https://npmcdn.com/react-router/umd/ReactRouter.min.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyB5BYedtCPzfAhtbt0ZQvhoDDDcyoct9TY",
+    authDomain: "amicale.firebaseapp.com",
+    databaseURL: "https://amicale.firebaseio.com",
+    storageBucket: "project-4508461957841032139.appspot.com",
+  };
+  firebase.initializeApp(config);
 </script>
 <!--STYLES-->
 <link rel="stylesheet" href="/styles/importer.css">
@@ -61,7 +73,6 @@
           <li ><a data-toggle="collapse" data-target=".in" href="/post">See posts</a></li>
           <li><a data-toggle="collapse" data-target=".in" href="/post/new">New post</a></li>
           <li><a data-toggle="collapse" data-target=".in" href="/notification">New simple notification</a></li>
-          <li><a  data-toggle="collapse" data-target=".in"href="/notification/troll">Notification troll</a></li>
           <li><a href="/logout">LogOut</a></li>
         </ul>
       </div>

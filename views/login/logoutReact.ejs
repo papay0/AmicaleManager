@@ -1,0 +1,32 @@
+<div id="content"></div>
+<script type="text/babel">
+
+class LogoutComponent extends React.Component {
+
+
+  componentDidMount() {
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+      console.log("Logged out successful");
+      document.location.href="/"
+    }, function(error) {
+      alert("Error log out");
+      // An error happened.
+    });
+  }
+
+  render() {
+    return (
+      <p>
+      Log out...
+      </p>
+    )
+  }
+}
+
+
+ReactDOM.render(
+  <LogoutComponent/>,
+  document.getElementById('content')
+);
+</script>

@@ -1,0 +1,143 @@
+<div id="content"></div>
+
+<script type="text/babel">
+
+class NewPostComponent extends React.Component {
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        document.location.href="/login"
+      } else {
+        console.log("I am connected to Firebase!: "+user.email);
+      }
+    })
+  }
+
+  base64(file, callback){
+    var coolFile = {};
+    function readerOnload(e){
+      var base64 = btoa(e.target.result);
+      coolFile.base64 = base64;
+      callback(coolFile)
+    };
+
+    var reader = new FileReader();
+    reader.onload = readerOnload;
+
+    var file = file[0].files[0];
+    coolFile.filetype = file.type;
+    coolFile.size = file.size;
+    coolFile.filename = file.name;
+    reader.readAsBinaryString(file);
+  }
+
+  redirectionPost() {
+    document.location.href="/post"
+  }
+
+  onSubmit(e) {
+    e.preventDefault()
+    var that = this;
+    const { title, description } = this.state
+    console.log('title: '+title+' description: '+description);
+    var date = moment().format("DD-MM-YYYY");
+    var timestamp = moment().unix();
+    var timestampInverse = Number.MAX_SAFE_INTEGER - timestamp;
+    var image = $('input[type="file"]');
+    var base64 = "";
+    var imagePresents = false;
+    var fileSelected = document.getElementById("picture").files;
+    if (fileSelected.length > 0) {
+      var storage = firebase.storage();
+      var storageRef = storage.ref();
+      var imagesRef = storageRef.child('posts');
+      imagePresents = true;
+      this.base64( image, function(data){
+        base64 = data.base64;
+          var file = image[0].files[0];
+          var uploadTask = storageRef.child('posts/' + file.name).put(file);
+                  // Register three observers:
+                  // 1. 'state_changed' observer, called any time the state changes
+                  // 2. Error observer, called on failure
+                  // 3. Completion observer, called on successful completion
+                  uploadTask.on('state_changed', function(snapshot){
+                  // Observe state change events such as progress, pause, and resume
+                  // See below for more detail
+                  }, function(error) {
+                  // Handle unsuccessful uploads
+                  }, function() {
+                  // Handle successful uploads on complete
+                  // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                  var downloadURL = uploadTask.snapshot.downloadURL;
+                  var postData = {
+                    author: "Amicale",
+              			title: title,
+              			description: description,
+              			date: date,
+              			imagePresents: imagePresents,
+              			imageData: base64,
+                    imageURL: downloadURL,
+              			timestamp: timestamp,
+              			timestampInverse: timestampInverse
+                  };
+                  var newPostKey = firebase.database().ref().child('posts').push().key;
+                  var updates = {};
+                  updates['/posts/' + newPostKey] = postData;
+                  firebase.database().ref().update(updates);
+                  //that.redirectionPost();
+              });
+
+        });
+    } else {
+      var postData = {
+        author: "Amicale",
+  			title: title,
+  			description: description,
+  			date: date,
+  			imagePresents: false,
+  			imageData: base64,
+        imageURL: "",
+  			timestamp: timestamp,
+  			timestampInverse: timestampInverse
+      };
+      var newPostKey = firebase.database().ref().child('posts').push().key;
+      var updates = {};
+      updates['/posts/' + newPostKey] = postData;
+      firebase.database().ref().update(updates);
+      //this.redirectionPost();
+    }
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <form className="form-signin" onSubmit={this.onSubmit.bind(this)}>
+          <h2 className="form-signin-heading">New post</h2>
+          <label className="sr-only">Title</label>
+          <input className="form-control" type='text'
+            onChange={(e) => this.setState({title: e.target.value})}
+            placeholder='title'
+            required
+          />
+          <label className="sr-only">Description</label>
+          <textarea onChange={(e) => this.setState({description: e.target.value})} cols="40" rows="5" name="description" className="form-control" placeholder="Description" required></textarea>
+          <br/>
+          <br/>
+          <input type="file" name="picture" id="picture"></input>
+          <br/>
+          <br/>
+          <button className="btn btn-lg btn-primary btn-block" type="submit">Send</button>
+        </form>
+      </div>
+
+    );
+  }
+}
+
+
+ReactDOM.render(
+  <NewPostComponent/>,
+  document.getElementById('content')
+);
+</script>

@@ -1,0 +1,38 @@
+<div id="content"></div>
+
+<script type="text/babel">
+
+class NotificationComponent extends React.Component {
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        document.location.href="/login"
+      } else {
+        console.log("I am connected to Firebase!: "+user.email);
+      }
+    })
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <form className="form-signin" method="POST" action="/notification/new">
+          <h2 className="form-signin-heading">New simple notification</h2>
+          <label>Text to send</label>
+          <input type="text" id="inputTitle" className="form-control" name="text" placeholder="text" required />
+          <br/>
+          <br/>
+          <button className="btn btn-lg btn-primary btn-block" type="submit">Send</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+
+ReactDOM.render(
+  <NotificationComponent/>,
+  document.getElementById('content')
+);
+</script>

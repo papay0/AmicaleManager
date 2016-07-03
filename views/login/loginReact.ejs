@@ -1,0 +1,87 @@
+<style>
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  left: 50%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+<div id="content"></div>
+<!-- <div class="loader"></div> -->
+<!-- <script type="text/javascript" src="/react/posts/postsBrowserified.js"></script> -->
+
+<script type="text/babel">
+
+class LoginComponent extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+
+  onSubmit(e) {
+    e.preventDefault()
+    const { email, password } = this.state
+    const { dispatch } = this.props
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        console.log("in .then "+user);
+        document.location.href="/"
+      }).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  console.log("ERROR: "+errorMessage);
+  alert(errorMessage);
+  // ...
+});
+  }
+
+  render() {
+    return (
+      <form className="form-signin" onSubmit={this.onSubmit.bind(this)}>
+      <h2 className="form-signin-heading">Amicale login</h2>
+      <label  className="sr-only">Username</label>
+        <input className="form-control" type='email'
+          onChange={(e) => this.setState({email: e.target.value})}
+          placeholder='email'
+          required
+        />
+        <input className="form-control" type='password'
+          onChange={(e) => this.setState({password: e.target.value})}
+          placeholder='****'
+          required
+        />
+        <button className="btn btn-lg btn-primary btn-block" type="submit" value="submit">Log in</button>
+      </form>
+    );
+  }
+}
+
+
+ReactDOM.render(
+  <LoginComponent/>,
+  document.getElementById('content')
+);
+</script>

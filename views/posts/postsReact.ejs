@@ -1,0 +1,73 @@
+<div id="content"></div>
+
+<script type="text/babel">
+
+var firebaseRef = firebase.database();
+
+var PostComponent = React.createClass({
+
+  getInitialState: function() {
+    return {
+      data: []
+    };
+  },
+
+  componentDidMount: function() {
+    var that = this;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        document.location.href="/login"
+      } else {
+        console.log("I am connected to Firebase!: "+user.email);
+        firebase.database().ref('posts/').on('value', function(snapshot) {
+          var array = $.map(snapshot.val(), function(value, index) {
+              return [value];
+          });
+          that.setState({data: array});
+        });
+      }
+    })
+  },
+
+  render: function() {
+    var posts = this.state.data.map(function(post) {
+      var img = "";
+      var divStyleImg = {
+        width: 470,
+        height: 352
+      };
+      console.log(post.title);
+      if (post.imagePresents == true) {
+        //img = <img className="image" src={"data:image/gif;base64,"+post.imageData} style={divStyleImg}/>
+        img = <img className="image" src={post.imageURL} style={divStyleImg}/>
+      }
+      return (
+        <div className="panel-group" key={post.timestamp}>
+        <div className="panel panel-default">
+        <div className="panel-heading"> {post.title}</div>
+        <div className="panel-body">
+          {post.description}
+          <br/>
+          <br/>
+          {img}
+        </div>
+        </div>
+        </div>
+      );
+    });
+    posts = posts.reverse();
+    return (
+      <div className="container">
+      <h2>Post | Notification</h2>
+      {posts}
+      </div>
+    )}
+
+});
+
+
+ReactDOM.render(
+  <PostComponent/>,
+  document.getElementById('content')
+);
+</script>

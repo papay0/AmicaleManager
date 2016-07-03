@@ -6,15 +6,19 @@
 */
 
 
-var Firebase = require("firebase");
-var ref = new Firebase(sails.config.globals.ref_firebase);
-var postsRef = ref.child("posts");
+var firebase = require("firebase");
+// firebase.initializeApp({
+// 	serviceAccount: sails.config.globals.path_service_amicale_config,
+// 	databaseURL: sails.config.globals.ref_firebase
+// });
+//var ref = new Firebase(sails.config.globals.ref_firebase);
+//var postsRef = ref.child("posts");
 var moment = require('moment');
 
 module.exports = {
 
 	'/':function(req, res){
-		res.view('posts/posts');
+		res.view('posts/postsReact');
 	},
 
 	'new': function(req, res){
@@ -23,6 +27,7 @@ module.exports = {
 
 
 	'send': function(req, res){
+		var storage = firebase.storage();
 		var title = req.param("title");
 		var text = req.param("description");
 		sails.log("title = "+title+" description = "+text);

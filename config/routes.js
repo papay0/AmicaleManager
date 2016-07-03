@@ -27,7 +27,7 @@ module.exports.routes = {
   },
 
   'get /login': { // login
-       view: 'login/login'
+       view: 'login/loginReact'
   },
 
   'post /login': { // login formulaire
@@ -41,8 +41,7 @@ module.exports.routes = {
   },
 
   'get /post/new':{
-      controller: 'PostController',
-      action: 'new'
+      view: 'posts/newPostReact'
   },
 
   'post /post/new':{
@@ -51,13 +50,11 @@ module.exports.routes = {
   },
 
   'get /logout':{
-    controller: 'AuthController',
-    action: 'logout'
+    view: 'login/logoutReact'
   },
 
   'get /notification':{
-    controller: 'NotificationController',
-    action: 'new'
+    view: 'notification/notificationReact'
   },
 
   'post /notification/new': {
