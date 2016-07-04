@@ -68,11 +68,6 @@ module.exports = {
 		return res.json("Bien ouej poulet");
 	},
 
-	'sendTroll': function(req, res){
-		sails.controllers.notification.sendPushTroll();
-		res.redirect('/');
-	},
-
 	'new': function(req, res){
 		res.view('notification/notification');
 	}

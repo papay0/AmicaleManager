@@ -2,20 +2,29 @@
 
 <script type="text/babel">
 
-class NotificationComponent extends React.Component {
+  var NotificationComponent = React.createClass({
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        document.location.href="/login"
-      } else {
-        console.log("I am connected to Firebase!: "+user.email);
+    getInitialState: function() {
+      return {
+      loading: true
       }
-    })
-  }
+    },
 
-  render() {
-    return (
+    componentDidMount: function() {
+      var that = this;
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          document.location.href="/login"
+        } else {
+          that.setState({loading: false});
+          console.log("I am connected to Firebase!: "+user.email);
+        }
+      })
+    },
+
+  render: function() {
+    if (!this.state.loading) {
+    var form = (
       <div className="container">
         <form className="form-signin" method="POST" action="/notification/new">
           <h2 className="form-signin-heading">New simple notification</h2>
@@ -27,8 +36,17 @@ class NotificationComponent extends React.Component {
         </form>
       </div>
     );
+  } else {
+    var form = "[NOTIFICATION] Loading... (Checking for authentication right)"
   }
-}
+
+    return (
+      <div className="container">
+        {form}
+      </div>
+    );
+  }
+});
 
 
 ReactDOM.render(
