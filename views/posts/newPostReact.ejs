@@ -7,7 +7,9 @@
 
     getInitialState: function() {
       return {
-      loading: true
+      loading: true,
+      title: '',
+      description: ''
       }
     },
 
@@ -48,7 +50,8 @@
   onSubmit: function(e) {
     e.preventDefault()
     var that = this;
-    const { title, description } = this.state
+    var title = this.state.title;
+    var description = this.state.description;
     console.log('title: '+title+' description: '+description);
     var date = moment().format("DD-MM-YYYY");
     var timestamp = moment().unix();
@@ -58,12 +61,14 @@
     var imagePresents = false;
     var fileSelected = document.getElementById("picture").files;
     if (fileSelected.length > 0) {
+      console.log("je commence à uploader mon image");
       var storage = firebase.storage();
       var storageRef = storage.ref();
       var imagesRef = storageRef.child('posts');
       imagePresents = true;
       this.base64( image, function(data){
         base64 = data.base64;
+        console.log("base64 OK");
           var file = image[0].files[0];
           var uploadTask = storageRef.child('posts/' + file.name).put(file);
                   // Register three observers:
@@ -79,6 +84,7 @@
                   // Handle successful uploads on complete
                   // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                   var downloadURL = uploadTask.snapshot.downloadURL;
+                  console.log("URL OK: "+downloadURL);
                   var postData = {
                     author: "Amicale",
               			title: title,
@@ -90,11 +96,30 @@
               			timestamp: timestamp,
               			timestampInverse: timestampInverse
                   };
+                  var fd = new FormData();
+                  fd.append('title', title);
                   var newPostKey = firebase.database().ref().child('posts').push().key;
                   var updates = {};
                   updates['/posts/' + newPostKey] = postData;
                   firebase.database().ref().update(updates).then(function() {
-                    that.redirectionPost();
+                    console.log("Upload to firebase OK");
+                    $.ajax({
+                      url: '/notification/new_react',
+                      type: 'POST',
+                      data: fd,
+                      dataType: 'json',
+                      cache: false,
+                      processData: false,
+                      contentType: false,
+                      success: function(data) {
+                            //alert("Success ajax notification/new: "+data);
+                            console.log("Success to send notification");
+                            that.redirectionPost();
+                          }.bind(this),
+                          error: function(xhr, status, err) {
+                            alert("Error ajax post notification/new: "+err);
+                          }.bind(this)
+                        });
                   });
                   //that.redirectionPost();
               });
@@ -119,7 +144,7 @@
       updates['/posts/' + newPostKey] = postData;
       firebase.database().ref().update(updates).then(function() {
         $.ajax({
-          url: '/notification/new',
+          url: '/notification/new_react',
           type: 'POST',
           data: fd,
           dataType: 'json',
@@ -140,9 +165,11 @@
   },
 
   render: function() {
+    var that = this;
     if (!this.state.loading) {
     var form = (
-      <form className="form-signin" onSubmit={this.onSubmit.bind(null, this)} >
+      <div className="container">
+      <form className="form-signin" onSubmit={this.onSubmit}>
         <h2 className="form-signin-heading">New post</h2>
         <label className="sr-only">Title</label>
         <input className="form-control" type='text'
@@ -159,13 +186,14 @@
         <br/>
         <button className="btn btn-lg btn-primary btn-block" type="submit">Send</button>
       </form>
+      </div>
     );
   } else {
     var form = "[NEW POST] Loading... (Checking for authentication right)"
   }
 
     return (
-      <div className="container">
+      <div>
       {form}
       </div>
     );

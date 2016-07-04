@@ -62,6 +62,11 @@ module.exports.routes = {
     action: 'send'
   },
 
+  'post /notification/new_react': {
+    controller: 'NotificationController',
+    action: 'sendNotificationFromReact'
+  },
+
   'get /washINSA/json': {
     controller: 'WashINSAController',
     action: '/'
