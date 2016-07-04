@@ -72,6 +72,10 @@ module.exports.routes = {
     action: '/'
   },
 
+  'get /washINSA': {
+    view: 'washing/washing'
+  },
+
   'get /menuRU/json': {
     controller: 'MenuRUController',
     action: '/'
