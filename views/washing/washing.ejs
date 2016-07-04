@@ -4,10 +4,76 @@
 
 class WashingComponent extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      numberUsers: 'LOADING...',
+      washingMachineInfo: 'LOADING...',
+      loading: true
+    }
+  }
+
+  componentDidMount() {
+    var that = this;
+    firebase.database().ref('washing/numberUsers').on('value', function(snapshot) {
+      that.setState({numberUsers: snapshot.val()});
+    });
+    $.ajax({
+      url: '/washINSA/json',
+      type: 'GET',
+      data: '',
+      dataType: 'json',
+      cache: false,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        that.setState({washingMachineInfo: data['json']});
+        that.setState({loading: false});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        alert("Error ajax get washing intormation: "+err);
+      }.bind(this)
+    });
+  }
+
   render() {
+    if (!this.state.loading) {
+      var machines = this.state.washingMachineInfo;
+      var washingMachine = this.state.washingMachineInfo.map(function(machine) {
+            return (
+              <tr key={machine.machine}>
+                <td>{machine.machine}</td>
+                <td>{machine.available}</td>
+                <td>{machine.start}</td>
+                <td>{machine.end}</td>
+                <td>{machine.remainingTime}</td>
+                <td>{machine.type}</td>
+              </tr>
+            );
+          });
+    } else {
+      var washingMachine = "Loading...";
+    }
+
     return (
       <div className="container">
-        <p>Number of users</p>
+      <p>Number of users: {this.state.numberUsers}</p>
+
+      <table className="table">
+      <thead>
+      <tr>
+      <th>Machine</th>
+      <th>Available</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>RemainingTime</th>
+      <th>Type</th>
+      </tr>
+      </thead>
+      <tbody>
+      {washingMachine}
+      </tbody>
+      </table>
       </div>
     );
   }

@@ -8,7 +8,8 @@ var PostComponent = React.createClass({
 
   getInitialState: function() {
     return {
-      data: []
+      data: [],
+      loading: true
     };
   },
 
@@ -24,12 +25,14 @@ var PostComponent = React.createClass({
               return [value];
           });
           that.setState({data: array});
+          that.setState({loading: false});
         });
       }
     })
   },
 
   render: function() {
+    if (!this.state.loading){
     var posts = this.state.data.map(function(post) {
       var img = "";
       var divStyleImg = {
@@ -56,6 +59,9 @@ var PostComponent = React.createClass({
       );
     });
     posts = posts.reverse();
+  } else {
+    var posts = "[POST] Loading... (Checking for authentication right)"
+  }
     return (
       <div className="container">
       <h2>Post | Notification</h2>

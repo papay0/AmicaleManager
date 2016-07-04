@@ -62,11 +62,6 @@ module.exports.routes = {
     action: 'send'
   },
 
-  'get /notification/troll': {
-    controller: 'NotificationController',
-    action: 'sendTroll'
-  },
-
   'get /washINSA/json': {
     controller: 'WashINSAController',
     action: '/'
