@@ -1,3 +1,29 @@
+<style>
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  left: 50%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
 <div id="content"></div>
 
 <script type="text/babel">
@@ -9,7 +35,8 @@
       return {
       loading: true,
       title: '',
-      description: ''
+      description: '',
+      loader: false
       }
     },
 
@@ -49,6 +76,7 @@
 
   onSubmit: function(e) {
     e.preventDefault()
+    this.setState({loader: true});
     var that = this;
     var title = this.state.title;
     var description = this.state.description;
@@ -164,6 +192,14 @@
     }
   },
 
+  setLoader: function() {
+    if (this.state.loader) {
+      return (<div className="loader"></div>);
+    } else {
+      return ("");
+    }
+  },
+
   render: function() {
     var that = this;
     if (!this.state.loading) {
@@ -194,6 +230,7 @@
 
     return (
       <div>
+      {this.setLoader()}
       {form}
       </div>
     );
