@@ -72,7 +72,7 @@ var PostComponent = React.createClass({
         height: 352
       };
       console.log(post.title);
-      if (post.imagePresents == true) {
+      if (post.imageURL !== "") {
         //img = <img className="image" src={"data:image/gif;base64,"+post.imageData} style={divStyleImg}/>
         img = <img className="image" src={post.imageURL} style={divStyleImg}/>
       }

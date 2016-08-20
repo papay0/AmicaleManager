@@ -85,7 +85,6 @@
     var timestamp = moment().unix();
     var timestampInverse = Number.MAX_SAFE_INTEGER - timestamp;
     var image = $('input[type="file"]');
-    var base64 = "";
     var imagePresents = false;
     var fileSelected = document.getElementById("picture").files;
     if (fileSelected.length > 0) {
@@ -94,23 +93,15 @@
       var storageRef = storage.ref();
       var imagesRef = storageRef.child('posts');
       imagePresents = true;
-      this.base64( image, function(data){
-        base64 = data.base64;
+      //this.base64( image, function(data){
+        //base64 = data.base64;
         console.log("base64 OK");
           var file = image[0].files[0];
           var uploadTask = storageRef.child('posts/' + file.name).put(file);
-                  // Register three observers:
-                  // 1. 'state_changed' observer, called any time the state changes
-                  // 2. Error observer, called on failure
-                  // 3. Completion observer, called on successful completion
                   uploadTask.on('state_changed', function(snapshot){
-                  // Observe state change events such as progress, pause, and resume
-                  // See below for more detail
                   }, function(error) {
-                  // Handle unsuccessful uploads
+                    console.log('error when I try to upload an image to Firebasestorage')
                   }, function() {
-                  // Handle successful uploads on complete
-                  // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                   var downloadURL = uploadTask.snapshot.downloadURL;
                   console.log("URL OK: "+downloadURL);
                   var postData = {
@@ -118,8 +109,7 @@
               			title: title,
               			description: description,
               			date: date,
-              			imagePresents: imagePresents,
-              			imageData: base64,
+              			imagePresents: false,
                     imageURL: downloadURL,
               			timestamp: timestamp,
               			timestampInverse: timestampInverse
@@ -152,7 +142,8 @@
                   //that.redirectionPost();
               });
 
-        });
+      //  }
+      //);
     } else {
       var postData = {
         author: "Amicale",
@@ -160,7 +151,6 @@
   			description: description,
   			date: date,
   			imagePresents: false,
-  			imageData: base64,
         imageURL: "",
   			timestamp: timestamp,
   			timestampInverse: timestampInverse
