@@ -57,7 +57,7 @@ module.exports = {
 	'send': function(req, res){
 		var text = req.param("text");
 		sails.log("test received: "+text);
-		//sails.controllers.notification.sendSimplePush(text);
+		sails.controllers.notification.sendSimplePush(text);
 		res.redirect('/post');
 	},
 

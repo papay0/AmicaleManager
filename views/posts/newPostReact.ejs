@@ -29,16 +29,16 @@
 <script type="text/babel">
 
 
-  var NewPostComponent = React.createClass({
+var NewPostComponent = React.createClass({
 
-    getInitialState: function() {
-      return {
+  getInitialState: function() {
+    return {
       loading: true,
       title: '',
       description: '',
       loader: false
-      }
-    },
+    }
+  },
 
   componentDidMount: function() {
     var that = this;
@@ -52,27 +52,11 @@
     })
   },
 
-  base64: function(file, callback){
-    var coolFile = {};
-    function readerOnload(e){
-      var base64 = btoa(e.target.result);
-      coolFile.base64 = base64;
-      callback(coolFile)
-    };
-
-    var reader = new FileReader();
-    reader.onload = readerOnload;
-
-    var file = file[0].files[0];
-    coolFile.filetype = file.type;
-    coolFile.size = file.size;
-    coolFile.filename = file.name;
-    reader.readAsBinaryString(file);
-  },
-
   redirectionPost: function() {
     document.location.href="/post"
   },
+
+  
 
   onSubmit: function(e) {
     e.preventDefault()
@@ -85,75 +69,85 @@
     var timestamp = moment().unix();
     var timestampInverse = Number.MAX_SAFE_INTEGER - timestamp;
     var image = $('input[type="file"]');
-    var imagePresents = false;
     var fileSelected = document.getElementById("picture").files;
     if (fileSelected.length > 0) {
       console.log("je commence à uploader mon image");
       var storage = firebase.storage();
       var storageRef = storage.ref();
       var imagesRef = storageRef.child('posts');
-      imagePresents = true;
-      //this.base64( image, function(data){
-        //base64 = data.base64;
-        console.log("base64 OK");
-          var file = image[0].files[0];
-          var uploadTask = storageRef.child('posts/' + file.name).put(file);
-                  uploadTask.on('state_changed', function(snapshot){
-                  }, function(error) {
-                    console.log('error when I try to upload an image to Firebasestorage')
-                  }, function() {
-                  var downloadURL = uploadTask.snapshot.downloadURL;
-                  console.log("URL OK: "+downloadURL);
-                  var postData = {
-                    author: "Amicale",
-              			title: title,
-              			description: description,
-              			date: date,
-              			imagePresents: false,
-                    imageURL: downloadURL,
-              			timestamp: timestamp,
-              			timestampInverse: timestampInverse
-                  };
-                  var fd = new FormData();
-                  fd.append('title', title);
-                  var newPostKey = firebase.database().ref().child('posts').push().key;
-                  var updates = {};
-                  updates['/posts/' + newPostKey] = postData;
-                  firebase.database().ref().update(updates).then(function() {
-                    console.log("Upload to firebase OK");
-                    $.ajax({
-                      url: '/notification/new_react',
-                      type: 'POST',
-                      data: fd,
-                      dataType: 'json',
-                      cache: false,
-                      processData: false,
-                      contentType: false,
-                      success: function(data) {
-                            //alert("Success ajax notification/new: "+data);
-                            console.log("Success to send notification");
-                            that.redirectionPost();
-                          }.bind(this),
-                          error: function(xhr, status, err) {
-                            alert("Error ajax post notification/new: "+err);
-                          }.bind(this)
-                        });
-                  });
-                  //that.redirectionPost();
-              });
+      var file = image[0].files[0];
+
+      var reader = new FileReader();
+      //Read the contents of Image File.
+      reader.readAsDataURL(file);
+      reader.onload = function (e) {
+        var image = new Image();
+        //Set the Base64 string return from FileReader as source.
+        image.src = e.target.result;
+        //Validate the File Height and Width.
+        image.onload = function () {
+          var height = this.height;
+          var width = this.width;
+          console.log("height: "+ height + ", width: " + width);
+        };
+      }
+      var uploadTask = storageRef.child('posts/' + file.name).put(file);
+      uploadTask.on('state_changed', function(snapshot){
+      }, function(error) {
+        console.log('error when I try to upload an image to Firebasestorage')
+      }, function() {
+        var downloadURL = uploadTask.snapshot.downloadURL;
+        console.log("URL OK: "+downloadURL);
+        var postData = {
+          author: "Amicale",
+          title: title,
+          description: description,
+          date: date,
+          imagePresents: false,
+          imageURL: downloadURL,
+          timestamp: timestamp,
+          timestampInverse: timestampInverse
+        };
+        var fd = new FormData();
+        fd.append('title', title);
+        var newPostKey = firebase.database().ref().child('posts').push().key;
+        var updates = {};
+        updates['/posts/' + newPostKey] = postData;
+        firebase.database().ref().update(updates).then(function() {
+          console.log("Upload to firebase OK");
+          $.ajax({
+            url: '/notification/new_react',
+            type: 'POST',
+            data: fd,
+            dataType: 'json',
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+              //alert("Success ajax notification/new: "+data);
+              console.log("Success to send notification");
+              that.redirectionPost();
+            }.bind(this),
+            error: function(xhr, status, err) {
+              alert("Error ajax post notification/new: "+err);
+            }.bind(this)
+          });
+        });
+        //that.redirectionPost();
+      });
 
       //  }
       //);
     } else {
       var postData = {
         author: "Amicale",
-  			title: title,
-  			description: description,
-  			date: date,
-  			imagePresents: false,
+        title: title,
+        description: description,
+        date: date,
+        imagePresents: false,
         imageURL: "",
-  			timestamp: timestamp,
-  			timestampInverse: timestampInverse
+        timestamp: timestamp,
+        timestampInverse: timestampInverse
       };
       var fd = new FormData();
       fd.append('title', title);
@@ -170,14 +164,14 @@
           processData: false,
           contentType: false,
           success: function(data) {
-                //alert("Success ajax notification/new: "+data);
-                console.log("Success to send notification");
-                that.redirectionPost();
-              }.bind(this),
-              error: function(xhr, status, err) {
-                alert("Error ajax post notification/new: "+err);
-              }.bind(this)
-            });
+            //alert("Success ajax notification/new: "+data);
+            console.log("Success to send notification");
+            that.redirectionPost();
+          }.bind(this),
+          error: function(xhr, status, err) {
+            alert("Error ajax post notification/new: "+err);
+          }.bind(this)
+        });
       });
     }
   },
@@ -193,15 +187,15 @@
   render: function() {
     var that = this;
     if (!this.state.loading) {
-    var form = (
-      <div className="container">
-      <form className="form-signin" onSubmit={this.onSubmit}>
+      var form = (
+        <div className="container">
+        <form className="form-signin" onSubmit={this.onSubmit}>
         <h2 className="form-signin-heading">New post</h2>
         <label className="sr-only">Title</label>
         <input className="form-control" type='text'
-          onChange={(e) => this.setState({title: e.target.value})}
-          placeholder='title'
-          required
+        onChange={(e) => this.setState({title: e.target.value})}
+        placeholder='title'
+        required
         />
         <label className="sr-only">Description</label>
         <textarea onChange={(e) => this.setState({description: e.target.value})} cols="40" rows="5" name="description" className="form-control" placeholder="Description" required></textarea>
@@ -211,12 +205,12 @@
         <br/>
         <br/>
         <button className="btn btn-lg btn-primary btn-block" type="submit">Send</button>
-      </form>
-      </div>
-    );
-  } else {
-    var form = "[NEW POST] Loading... (Checking for authentication right)"
-  }
+        </form>
+        </div>
+      );
+    } else {
+      var form = "[NEW POST] Loading... (Checking for authentication right)"
+    }
 
     return (
       <div>

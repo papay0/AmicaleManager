@@ -9,7 +9,7 @@ module.exports = {
 
 	addEntryFirebase: function() {
 		var moment = require('moment');
-		var date = moment().format("DD-MM-YYYY, h:mm:ss a')");
+		var date = moment().format("DD-MM-YYYY, h:mm:ss a");
 		sails.log("coucou, I add an entry in Firebase database");
 		var firebase = require ('firebase');
 		var db = firebase.database();
