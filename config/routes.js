@@ -89,6 +89,11 @@ module.exports.routes = {
   'get /versions/json': {
     controller: 'MobileApplicationVersions',
     action: '/'
+  },
+
+  'get /Chat/clean': {
+    controller: 'ChatController',
+    action: 'clean'
   }
 
 };
