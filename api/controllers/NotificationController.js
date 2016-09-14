@@ -64,7 +64,7 @@ module.exports = {
 	'sendNotificationFromReact': function(req, res){
 		var text = req.param('title');
 		sails.log("test received: "+text);
-		sails.controllers.notification.sendSimplePush(text);
+		sails.controllers.notification.sendPush(text);
 		return res.json("Bien ouej poulet");
 	},
 
