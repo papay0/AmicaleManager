@@ -17,6 +17,8 @@ module.exports.bootstrap = function(cb) {
     databaseURL: sails.config.globals.ref_firebase
   });
 
+  // I start this function only once because there is a listener, so it will work for ever!
+  sails.controllers.chat.checkMessagesWithTimestamp();
   setInterval(function() {
     var db = firebase.database();
 		var refActiveUsers = db.ref("activeUsers/");
